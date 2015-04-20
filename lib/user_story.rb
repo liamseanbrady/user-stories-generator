@@ -21,6 +21,18 @@ class UserStory
     @invalid_input
   end
 
+  def valid?
+    error_messages.empty?
+  end
+
+  def synthesize
+    if valid?
+      create_finished_story
+    else
+      raise StandardError, 'user story segments must be valid'
+    end
+  end
+
   private
 
   def add_section(section_name, content)
@@ -29,5 +41,16 @@ class UserStory
     else
       self.send("#{section_name.to_sym}=", content)
     end
+  end
+
+  def create_finished_story
+    vowels = %w(A E I O U a e i o u)
+    if vowels.include?(actor.slice(0)) && !actor.match(/\buser\b/i)
+      story = "As an #{actor}, I want to #{goal} so that #{reason}"
+    else 
+      story = "As a #{actor}, I want to #{goal} so that #{reason}"
+    end
+
+    story
   end
 end
