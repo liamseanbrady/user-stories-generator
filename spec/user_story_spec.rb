@@ -41,7 +41,7 @@ describe 'UserStory' do
   end
 
   describe '#valid?' do
-    it 'returns true is there are no error messages for the user story' do
+    it 'returns true if there are no error messages for the user story' do
       user_story.add_actor('User')
       user_story.add_goal('do TDD')
       user_story.add_reason('I can limit the errors in my code')
