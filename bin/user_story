@@ -1,0 +1,24 @@
+#!usr/bin/env ruby -w
+
+require '../lib/user_story'
+
+def exit_with
+  yield
+  exit
+end
+
+user_story = Story.new
+puts 'As a...'
+user_story.add_actor(gets.chomp)
+puts 'I want to...'
+user_story.add_goal(gets.chomp)
+puts 'so that...'
+user_story.add_reason(gets.chomp)
+
+begin
+  exit_with { puts user_story.synthesize }
+rescue => e
+  exit_with { puts "Error: #{e.message}" }
+end
+
+
