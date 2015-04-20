@@ -39,4 +39,56 @@ describe 'UserStory' do
       user_story.reason.must_equal('I can limit the errors in my code')
     end
   end
+
+  describe '#valid?' do
+    it 'returns true is there are no error messages for the user story' do
+      user_story.add_actor('User')
+      user_story.add_goal('do TDD')
+      user_story.add_reason('I can limit the errors in my code')
+
+      user_story.valid?.must_equal true
+    end
+    
+    it 'returns false if there are error messages for the user story' do
+      user_story.add_actor('')
+      user_story.add_goal('do TDD')
+      user_story.add_reason('I can limit the errors in my code')
+
+      user_story.valid?.must_equal false
+    end
+  end
+
+  describe '#synthesize' do
+    it 'raises an error if any of the user story sections are invalid' do
+      user_story.add_actor('')
+      user_story.add_goal('do TDD')
+      user_story.add_reason('I can limit the errors in my code')
+      
+      ->{ user_story.synthesize }.must_raise StandardError
+    end
+
+    it "returns the user story with correct indefinite article if the sections are valid" do
+      user_story.add_actor('Person')
+      user_story.add_goal('do TDD')
+      user_story.add_reason('I can limit the errors in my code')
+      
+      user_story.synthesize.must_equal 'As a Person, I want to do TDD so that I can limit the errors in my code'
+    end
+    
+    it "returns the user story with correct indefinite article if the sections are valid and the actor is User" do
+      user_story.add_actor('User')
+      user_story.add_goal('do TDD')
+      user_story.add_reason('I can limit the errors in my code')
+      
+      user_story.synthesize.must_equal 'As a User, I want to do TDD so that I can limit the errors in my code'
+    end
+
+    it "returns the user story with correct indefinite article if the sections are valid" do
+      user_story.add_actor('Administrator')
+      user_story.add_goal('do TDD')
+      user_story.add_reason('I can limit the errors in my code')
+      
+      user_story.synthesize.must_equal 'As an Administrator, I want to do TDD so that I can limit the errors in my code'
+    end
+  end
 end
