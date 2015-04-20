@@ -67,7 +67,7 @@ describe 'UserStory' do
       ->{ user_story.synthesize }.must_raise StandardError
     end
 
-    it "returns the user story with correct indefinite article if the sections are valid" do
+    it "returns the user story with correct indefinite article 'a' if the sections are valid" do
       user_story.add_actor('Person')
       user_story.add_goal('do TDD')
       user_story.add_reason('I can limit the errors in my code')
@@ -75,7 +75,7 @@ describe 'UserStory' do
       user_story.synthesize.must_equal 'As a Person, I want to do TDD so that I can limit the errors in my code'
     end
     
-    it "returns the user story with correct indefinite article if the sections are valid and the actor is User" do
+    it "returns the user story with correct indefinite article 'a' if the sections are valid and the actor is User" do
       user_story.add_actor('User')
       user_story.add_goal('do TDD')
       user_story.add_reason('I can limit the errors in my code')
@@ -83,7 +83,7 @@ describe 'UserStory' do
       user_story.synthesize.must_equal 'As a User, I want to do TDD so that I can limit the errors in my code'
     end
 
-    it "returns the user story with correct indefinite article if the sections are valid" do
+    it "returns the user story with correct indefinite article 'an' if the sections are valid" do
       user_story.add_actor('Administrator')
       user_story.add_goal('do TDD')
       user_story.add_reason('I can limit the errors in my code')
