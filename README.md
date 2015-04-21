@@ -5,23 +5,21 @@ I find the process of writing user stories repetitive, so I thought I would crea
 #### Initial Specifications
 
 - A user types `user_story` in the terminal and the program begins running
-- The happy path workflow for the user is:
+- The eventual happy path workflow for the user will be:
 
-    Enter the name of the project:
-    <input>
-    User Story <number of user story>
-    ----- * length of title above
-    Who is the actor?
-    <input>
-    As a/an <input from above> what do you want?
-    <input>
-    As a/an <input from two above> I want to <input from above> so that...?
-    <input>
-    Here is the completed user story...
-    <print user story>
-    Save user story? (y/n)
-    User story saved (or) User story was deleted
-    Would you like to add another user story?
-    <repeat the above> (or) <exit with saved file's location>
+  ```
+  Enter the name of the project:
+  <user input>
+  User Story <number of user story>
+  --------------------------------- (should be length of title above)
+  As a...
+  <actor input>
+  As a <actor input> I want to...
+  <goal input>
+  As a <goal input> I want to <reason input> so that...
+  <reason input>
+  Would you like to add another user story? (y/n)
+  <repeat the above> (or) <exit with saved file's location>
+  ```
 
 - Save file to <cwd/UserStoryTitle/user_stories.md> if it doesn't exist, otherwise, ask to overwrite. 
