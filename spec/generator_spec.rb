@@ -72,7 +72,7 @@ describe 'Generator' do
       story_two = Story.new
       story_two.add_actor('User')
       story_two.add_goal('do automated testing')
-      story_two.add_reason('I can spend less time pressing keys')
+      story_two.add_reason('testing is less laborious')
       user_stories << story_two.synthesize
 
       markdown = ""
@@ -81,7 +81,7 @@ describe 'Generator' do
       markdown += "\n"
       markdown += "- As a User, I want to do TDD so that I can have less errors in my code"
       markdown += "\n"
-      markdown += "- As a User, I want to do automated testing so that I can spend less time pressing keys"
+      markdown += "- As a User, I want to do automated testing so that testing is less laborious"
 
       generator.generate_markdown(*user_stories).must_equal markdown
     end
