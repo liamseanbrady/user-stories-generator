@@ -1,2 +1,2 @@
 require 'minitest/autorun'
-$LOAD_PATH.unshift File.expand_path('./lib/user_story')
+$LOAD_PATH.unshift File.expand_path('./lib')
