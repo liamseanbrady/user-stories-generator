@@ -1,5 +1,5 @@
 require_relative 'spec_helper'
-require 'story'
+require 'user_story'
 
 describe 'Story' do
   let(:story) { Story.new }
