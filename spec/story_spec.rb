@@ -58,13 +58,13 @@ describe 'Story' do
     end
   end
 
-  describe '#synthesize' do
+  describe '#build' do
     it 'raises an error if any of the user story sections are invalid' do
       story.add_actor('')
       story.add_goal('do TDD')
       story.add_reason('I can limit the errors in my code')
       
-      ->{ story.synthesize }.must_raise StandardError
+      ->{ story.build }.must_raise StandardError
     end
 
     it "returns the user story with correct indefinite article 'a' if the sections are valid" do
@@ -72,7 +72,7 @@ describe 'Story' do
       story.add_goal('do TDD')
       story.add_reason('I can limit the errors in my code')
       
-      story.synthesize.must_equal 'As a Person, I want to do TDD so that I can limit the errors in my code'
+      story.build.must_equal 'As a Person, I want to do TDD so that I can limit the errors in my code'
     end
     
     it "returns the user story with correct indefinite article 'a' if the sections are valid and the actor is User" do
@@ -80,7 +80,7 @@ describe 'Story' do
       story.add_goal('do TDD')
       story.add_reason('I can limit the errors in my code')
       
-      story.synthesize.must_equal 'As a User, I want to do TDD so that I can limit the errors in my code'
+      story.build.must_equal 'As a User, I want to do TDD so that I can limit the errors in my code'
     end
 
     it "returns the user story with correct indefinite article 'an' if the sections are valid" do
@@ -88,7 +88,7 @@ describe 'Story' do
       story.add_goal('do TDD')
       story.add_reason('I can limit the errors in my code')
       
-      story.synthesize.must_equal 'As an Administrator, I want to do TDD so that I can limit the errors in my code'
+      story.build.must_equal 'As an Administrator, I want to do TDD so that I can limit the errors in my code'
     end
   end
 end

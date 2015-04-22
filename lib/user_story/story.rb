@@ -25,7 +25,7 @@ class Story
     error_messages.empty?
   end
 
-  def synthesize
+  def build
     if valid?
       create_finished_story
     else
