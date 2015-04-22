@@ -3,7 +3,34 @@
 require_relative '../lib/user_story/story'
 require_relative '../lib/user_story/generator'
 
+def build_story
+  story = Story.new
+  say_with_clear_screen { puts 'As a...' }
+  story.add_actor(gets.chomp)
+  say_with_clear_screen { puts "As a #{story.actor} I want to..." }
+  story.add_goal(gets.chomp)
+  say_with_clear_screen { puts "As a #{story.actor} I want to #{story.goal} so that..." }
+  story.add_reason(gets.chomp)
+  story
+end
+
+def create_markdown_file(project_name, stories)
+  exit_with do
+    file_name = "#{project_name}.md"
+    markdown = Generator.new(project_name).generate_markdown(*stories)
+    IO.popen("touch #{file_name}") if !File.exist?("#{file_name}")
+    File.open("#{file_name}", 'w') { |file| file.write(markdown) }
+    current_file_path = File.expand_path('.')
+    say_with_clear_screen { puts "Your user stories were saved in #{current_file_path}/#{file_name}" }
+  end
+end
+
+def sanitize_file_name(file_name)
+  file_name.downcase.split.join('_') 
+end
+
 def exit_with
+  system 'clear'
   yield
   exit
 end
@@ -15,33 +42,24 @@ end
 
 stories = []
 say_with_clear_screen { puts "What's the name of your project?" }
-project_name = gets.chomp.downcase.split.join('_')
+project_name = sanitize_file_name(gets.chomp)
 
 loop do
   system 'clear'
-  story = Story.new
-  say_with_clear_screen { puts 'As a...' }
-  story.add_actor(gets.chomp)
-  say_with_clear_screen { puts "As a #{story.actor} I want to..." }
-  story.add_goal(gets.chomp)
-  say_with_clear_screen { puts "As a #{story.actor} I want to #{story.goal} so that..." }
-  story.add_reason(gets.chomp)
+  story = build_story
+
   begin
     stories << story.synthesize
   rescue => e
     exit_with { puts "Error: #{e.message}" }
   end
+
   say_with_clear_screen { puts 'Would you like to add another user story? (y/n)' }
+
   if %w(y Y).include?(gets.chomp)
     next
   else
-    exit_with do
-      file_name = "#{project_name}.md"
-      markdown = Generator.new(project_name).generate_markdown(*stories)
-      IO.popen("touch #{file_name}") if !File.exist?("#{file_name}")
-      File.open("#{file_name}", 'w') { |file| file.write(markdown) }
-      say_with_clear_screen { puts "Your user stories were saved in #{file_name}" }
-    end
+    create_markdown_file(project_name, stories)
   end
 end
 
