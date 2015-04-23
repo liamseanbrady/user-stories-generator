@@ -33,6 +33,10 @@ class Story
     end
   end
 
+  def to_markdown
+    "- #{self.build}"
+  end
+
   private
 
   def add_section(section_name, content)
