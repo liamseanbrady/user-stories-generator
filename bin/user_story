@@ -2,8 +2,9 @@
 
 require_relative '../lib/user_story/story'
 require_relative '../lib/user_story/generator'
+require_relative '../lib/user_story/story_collection'
 
-def build_story
+def new_story
   story = Story.new
   say_with_clear_screen { puts 'As a...' }
   story.add_actor(gets.chomp)
@@ -15,14 +16,12 @@ def build_story
 end
 
 def create_markdown_file(project_name, stories)
-  exit_with do
-    file_name = "#{project_name}.md"
-    markdown = Generator.new(project_name).generate_markdown(*stories)
-    IO.popen("touch #{file_name}") if !File.exist?("#{file_name}")
-    File.open("#{file_name}", 'w') { |file| file.write(markdown) }
-    current_file_path = File.expand_path('.')
-    say_with_clear_screen { puts "Your user stories were saved in #{current_file_path}/#{file_name}" }
-  end
+  file_name = "#{sanitize_file_name(project_name)}.md"
+  IO.popen("touch #{file_name}") if !File.exist?("#{file_name}")
+  markdown = stories.to_markdown
+  File.open("#{file_name}", 'w') { |file| file.write(markdown) }
+  current_file_path = File.expand_path('.')
+  say_with_clear_screen { puts "Your user stories were saved in #{current_file_path}/#{file_name}" }
 end
 
 def sanitize_file_name(file_name)
@@ -30,36 +29,40 @@ def sanitize_file_name(file_name)
 end
 
 def exit_with
-  system 'clear'
+  clear_screen
   yield
   exit
 end
 
 def say_with_clear_screen
-  system 'clear'
+  clear_screen
   yield
 end
 
-stories = []
-say_with_clear_screen { puts "What's the name of your project?" }
-project_name = sanitize_file_name(gets.chomp)
+def get_project_name
+  say_with_clear_screen { puts "What's the name of your project?" }
+  gets.chomp
+end
+
+def clear_screen
+  system 'clear'
+end
+
+def continue_adding_stories?
+  say_with_clear_screen { puts 'Would you like to add another user story? (y/n)' }
+  %w(y Y).include?(gets.chomp)
+end
+
+project_name = get_project_name
+stories = StoryCollection.new
 
 loop do
-  system 'clear'
-  story = build_story
-
-  begin
-    stories << story.synthesize
-  rescue => e
-    exit_with { puts "Error: #{e.message}" }
-  end
-
-  say_with_clear_screen { puts 'Would you like to add another user story? (y/n)' }
-
-  if %w(y Y).include?(gets.chomp)
+  clear_screen
+  stories.add_story(new_story)
+  if continue_adding_stories?
     next
   else
-    create_markdown_file(project_name, stories)
+    exit_with { create_markdown_file(project_name, stories) }
   end
 end
 
