@@ -91,4 +91,15 @@ describe 'Story' do
       story.build.must_equal 'As an Administrator, I want to do TDD so that I can limit the errors in my code'
     end
   end
+
+  describe '#to_markdown' do
+    it 'returns the story as markdown' do
+      story.add_actor('Administrator')
+      story.add_goal('do TDD')
+      story.add_reason('I can limit the errors in my code')
+      story.build
+      
+      story.to_markdown.must_equal '- As an Administrator, I want to do TDD so that I can limit the errors in my code'
+    end
+  end
 end
